@@ -1,16 +1,34 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+<<<<<<< HEAD
+=======
+# Ignore Python virtual environments
+flash-server/venv/
+
+>>>>>>> efbc8a6 (Recommit clean state)
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
 
+<<<<<<< HEAD
+=======
+# Build directories
+build/
+dist/
+
+>>>>>>> efbc8a6 (Recommit clean state)
 # testing
 /coverage
 
 # production
 /build
 
+<<<<<<< HEAD
+=======
+venv/
+
+>>>>>>> efbc8a6 (Recommit clean state)
 # misc
 .DS_Store
 .env.local

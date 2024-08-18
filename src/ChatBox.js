@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 import SendIcon from '@mui/icons-material/Send';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import swal from 'sweetalert';
 import { addConversation, clearConversation } from './Redux/Slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 
 const ChatBox = () => {
 
@@ -20,7 +20,8 @@ const ChatBox = () => {
     }
 
     const handleInput = (e) => {
-        if(userName==""){
+        e.preventDefault();
+        if(userName===""){
             handleUserName();
         }
         setInput(e.target.value)
@@ -33,9 +34,10 @@ const ChatBox = () => {
         setConversation([...conversation, userMessage]);
         dispatch(addConversation({role:"user", content: userMessage}))
         setInput('');
-        console.log(input)
+        // console.log(input)
         try {
-            const response = await axios.post('http://127.0.0.1:5000/get_chat', {
+            // const response = await axios.post('http://127.0.0.1:5000/get_chat', {
+            const response = await axios.post('https://e233-2401-4900-55ae-7fb0-d52-4dd0-73c4-6c96.ngrok-free.app/get_chat', {
                 input: input
             }, {
                 headers: {
@@ -45,7 +47,14 @@ const ChatBox = () => {
             const data = response.data
             const botMessage = { role: 'bot', content: data.reply };
             dispatch(addConversation({role:"AI", content: botMessage}))
-            setConversation((prev) => [...prev, botMessage])
+            if(!data.reply){
+                const DefaultMessage=data.error ;
+                alert("hii")
+                setConversation((prev) => [...prev, DefaultMessage])
+            }
+            else{
+                setConversation((prev) => [...prev, botMessage])
+            }
         } catch (e) {
             console.error("Error : ", e)
         }
@@ -56,12 +65,18 @@ const ChatBox = () => {
         swal("Chat Stoped!", "type again to start the chat!", "success");
 
     }
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+            handleSend();
+        }
+    };
     return (
         <>        
             <div className='ChatArea-container'>
                 <div className="chatarea-Header">
                     <div className="Header-text">{
-                        userName!="" ?
+                        userName!=="" ?
                         <p className="con-title">{userName}</p>:
                         <p className="con-title">Chat Bot</p>
                         }
@@ -81,13 +96,14 @@ const ChatBox = () => {
                         placeholder='Enter Text here'
                         value={input}
                         onChange={handleInput}
+                        onKeyDown={handleKeyPress}
                     />
                     {/* { endButton ? <button type="button" className="btn btn-info"
                         onClick={handleStop}>
                             <StopCircleIcon />
                     </button> : <p>Start</p>} */}
                     <button type="button" className="btn btn-info"
-                        onClick={handleStop}>
+                        onClick={handleStop} >
                         <StopCircleIcon />
                     </button>
 

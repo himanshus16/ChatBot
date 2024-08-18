@@ -1,19 +1,19 @@
-import React , {useState}from 'react'
+import React from 'react'
 import logo from "./icons/live-chat.png"
+
 
 const Header = () => {
 
-    const [login, setLogin] = useState("Login")
+    // const myContext = 
 
     const handleButton=(e)=>{
-        setLogin(e.target.value)
         alert("You are now logout")
     }
     return (
         <>
             <div className='Header-container'>
                 <div className='logo-container'>
-                    <img src={logo} style={{ width: "15vh", margin: "20px" }} />
+                    <img src={logo} alt="logo" style={{ width: "15vh", margin: "20px" }} />
                 </div>
                 <div>
                     <h4 style={{'fontWeight': "bold", "fontFamily":"Segoe UI"}}>Welcome to MINDEASE AI DashBoard</h4>
